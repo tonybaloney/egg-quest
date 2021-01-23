@@ -44,6 +44,6 @@ def setup_room(screen_height, screen_width, sprite_scaling, sprite_size):
     # If you want coins or monsters in a level, then add that code here.
 
     # Load the background image for this level.
-    room.background = arcade.load_texture(":resources:images/backgrounds/abstract_1.jpg")
+    room.background = arcade.load_texture("graphics/rooms/home.png")
 
     return room
