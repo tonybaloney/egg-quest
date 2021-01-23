@@ -20,7 +20,7 @@ def setup_room(screen_height, screen_width, sprite_scaling, sprite_size):
     for y in (0, screen_height - sprite_size):
         # Loop for each box going across
         for x in range(0, screen_width, sprite_size):
-            wall = arcade.Sprite(":resources:images/tiles/boxCrate_double.png", sprite_scaling)
+            wall = arcade.Sprite("graphics/trees/Flowered_Tree.png", sprite_scaling * 2)
             wall.left = x
             wall.bottom = y
             room.wall_list.append(wall)
@@ -31,7 +31,7 @@ def setup_room(screen_height, screen_width, sprite_scaling, sprite_size):
         for y in range(sprite_size, screen_height - sprite_size, sprite_size):
             # Skip making a block 4 and 5 blocks up on the right side
             if (y != sprite_size * 4 and y != sprite_size * 5) or x == 0:
-                wall = arcade.Sprite("graphics/trees/Flowered_Tree.png", sprite_scaling)
+                wall = arcade.Sprite("graphics/trees/Flowered_Tree.png", sprite_scaling * 2)
                 wall.left = x
                 wall.bottom = y
                 room.wall_list.append(wall)
