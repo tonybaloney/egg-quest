@@ -16,7 +16,6 @@ import rooms.home
 import rooms.dark_forest
 
 
-
 @dataclass
 class GameSettings:
     SPRITE_SCALING = 0.5
@@ -32,6 +31,8 @@ class GameSettings:
 
 class MyGame(arcade.Window):
     """ Main application class. """
+
+    settings: GameSettings
 
     def __init__(self, width, height, title):
         """
@@ -49,8 +50,6 @@ class MyGame(arcade.Window):
         # Sprite lists
         self.current_room = 0
 
-        self.settings = GameSettings()
-
         # Set up the player
         self.rooms = None
         self.player_sprite = None
@@ -59,6 +58,8 @@ class MyGame(arcade.Window):
 
     def setup(self):
         """ Set up the game and initialize the variables. """
+        self.settings = GameSettings()
+
         # Set up the player
         self.player_sprite = player.MainPlayerSprite(self.settings.SPRITE_SCALING)
         self.player_sprite.center_x = 100
@@ -77,7 +78,9 @@ class MyGame(arcade.Window):
         self.current_room = 0
 
         # Create a physics engine for this room
-        self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.rooms[self.current_room].wall_list)
+        self.physics_engine = arcade.PhysicsEngineSimple(
+            self.player_sprite, self.rooms[self.current_room].wall_list
+        )
 
     def on_draw(self):
         """
@@ -88,9 +91,13 @@ class MyGame(arcade.Window):
         arcade.start_render()
 
         # Draw the background texture
-        arcade.draw_lrwh_rectangle_textured(0, 0,
-                                            self.settings.SCREEN_WIDTH, self.setttings.SCREEN_HEIGHT,
-                                            self.rooms[self.current_room].background)
+        arcade.draw_lrwh_rectangle_textured(
+            0,
+            0,
+            self.settings.SCREEN_WIDTH,
+            self.settings.SCREEN_HEIGHT,
+            self.rooms[self.current_room].background,
+        )
 
         # Draw all the walls in this room
         self.rooms[self.current_room].wall_list.draw()
@@ -129,21 +136,28 @@ class MyGame(arcade.Window):
 
         # Do some logic here to figure out what room we are in, and if we need to go
         # to a different room.
-        if self.player_sprite.center_x > self.settings.SCREEN_WIDTH and self.current_room == 0:
+        if (
+            self.player_sprite.center_x > self.settings.SCREEN_WIDTH
+            and self.current_room == 0
+        ):
             self.current_room = 1
-            self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite,
-                                                             self.rooms[self.current_room].wall_list)
+            self.physics_engine = arcade.PhysicsEngineSimple(
+                self.player_sprite, self.rooms[self.current_room].wall_list
+            )
             self.player_sprite.center_x = 0
         elif self.player_sprite.center_x < 0 and self.current_room == 1:
             self.current_room = 0
-            self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite,
-                                                             self.rooms[self.current_room].wall_list)
+            self.physics_engine = arcade.PhysicsEngineSimple(
+                self.player_sprite, self.rooms[self.current_room].wall_list
+            )
             self.player_sprite.center_x = self.settings.SCREEN_WIDTH
 
 
 def main():
     """ Main method """
-    window = MyGame(GameSettings.SCREEN_WIDTH, GameSettings.SCREEN_HEIGHT, GameSettings.SCREEN_TITLE)
+    window = MyGame(
+        GameSettings.SCREEN_WIDTH, GameSettings.SCREEN_HEIGHT, GameSettings.SCREEN_TITLE
+    )
     window.setup()
     arcade.run()
 
